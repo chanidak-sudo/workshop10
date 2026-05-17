@@ -2,1042 +2,399 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Workshop 10 - Flutter Hive CRUD</title>
-
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Workshop 10 : Smart Note Hive CRUD Complete Guide</title>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;700&display=swap" rel="stylesheet">
-
 <style>
-
-body{
-    margin:0;
-    font-family:'Sarabun',sans-serif;
-    background:#f4f7fb;
-    color:#1e293b;
-    line-height:1.8;
-}
-
-header{
-    background:#0f766e;
-    color:white;
-    padding:40px 20px;
-}
-
-.container{
-    max-width:1100px;
-    margin:auto;
-    padding:24px;
-}
-
-.card{
-    background:white;
-    border-radius:16px;
-    padding:24px;
-    margin-bottom:24px;
-    border:1px solid #dbe4e4;
-    box-shadow:0 2px 8px rgba(0,0,0,.05);
-}
-
-.step{
-    display:inline-block;
-    background:#0f766e;
-    color:white;
-    padding:5px 14px;
-    border-radius:999px;
-    font-size:13px;
-    margin-bottom:12px;
-}
-
-.code{
-    background:#0f172a;
-    color:#e2e8f0;
-    border-radius:12px;
-    overflow:auto;
-    margin-top:16px;
-}
-
-.code-head{
-    background:#1e293b;
-    padding:12px;
-    font-size:13px;
-}
-
-pre{
-    padding:20px;
-    overflow:auto;
-}
-
-.note{
-    padding:16px;
-    border-radius:10px;
-    margin:18px 0;
-}
-
-.warn{
-    background:#fef3c7;
-    border-left:5px solid #d97706;
-}
-
-.bad{
-    background:#fee2e2;
-    border-left:5px solid #dc2626;
-}
-
-.ok{
-    background:#dcfce7;
-    border-left:5px solid #16a34a;
-}
-
-.checklist{
-    background:#ecfeff;
-    border:1px solid #a5f3fc;
-    padding:16px;
-    border-radius:10px;
-    margin-top:20px;
-}
-
-.folder{
-    background:#111827;
-    color:#cbd5e1;
-    padding:18px;
-    border-radius:12px;
-    margin-top:12px;
-}
-
-table{
-    width:100%;
-    border-collapse:collapse;
-    margin-top:20px;
-}
-
-th,td{
-    border:1px solid #dbe4e4;
-    padding:12px;
-}
-
-th{
-    background:#ccfbf1;
-}
-
-h1,h2,h3{
-    margin-top:0;
-}
-
+* { box-sizing: border-box; }
+body { margin: 0; font-family: 'Sarabun', sans-serif; background: #f4f7fb; color: #1e293b; line-height: 1.8; }
+header { background: linear-gradient(135deg, #0f766e, #115e59); padding: 50px; color: white; text-align: center; }
+header h1 { margin: 0; font-size: 32px; font-weight: 700; }
+header p { margin: 10px 0 0 0; opacity: 0.9; font-size: 16px; }
+.container { max-width: 1200px; margin: auto; padding: 24px; }
+.card { background: white; padding: 24px; margin-bottom: 24px; border-radius: 18px; box-shadow: 0 3px 10px rgba(0,0,0,.05); border: 1px solid #e2e8f0; }
+.step { display: inline-block; padding: 6px 14px; background: #0f766e; color: white; border-radius: 999px; font-size: 13px; margin-bottom: 12px; font-weight: bold; }
+.badge-theory { background: #2563eb !important; }
+.badge-test { background: #d97706 !important; }
+h2 { color: #0f766e; margin-top: 0; font-size: 22px; }
+.note { padding: 16px; border-radius: 12px; margin-top: 16px; }
+.ok { background: #dcfce7; border-left: 5px solid #16a34a; color: #14532d; }
+.bad { background: #fee2e2; border-left: 5px solid #dc2626; color: #991b1b; }
+.code { background: #0f172a; color: white; border-radius: 12px; overflow: auto; margin-top: 16px; }
+.code-head { background: #1e293b; padding: 12px; font-size: 13px; color: #94a3b8; font-family: monospace; }
+pre { padding: 20px; margin: 0; overflow: auto; font-family: 'Courier New', Courier, monospace; font-size: 14px; }
+.folder { background: #111827; color: #cbd5e1; padding: 18px; border-radius: 12px; white-space: pre-line; font-family: monospace; }
+table { width: 100%; border-collapse: collapse; margin-top: 18px; margin-bottom: 18px; }
+th, td { border: 1px solid #cbd5e1; padding: 12px; text-align: left; }
+th { background: #ccfbf1; color: #0f766e; font-weight: 700; }
+.question-box { background: #f8fafc; border: 1px dashed #cbd5e1; padding: 20px; border-radius: 10px; margin-top: 15px; }
+.q-title { font-weight: 700; color: #0f766e; font-size: 16px; }
+ol { padding-left: 20px; }
+li { margin-bottom: 8px; }
 </style>
 </head>
-
 <body>
 
 <header>
-
-<h1>Workshop 10 — Flutter Hive CRUD</h1>
-
-<p>
-สร้าง Note App ด้วย Flutter + Hive แบบ Step by Step
-</p>
-
+    <h1>Workshop 10: Smart Note Hive CRUD</h1>
+    <p>คู่มือเรียนรู้ระบบคลังข้อมูลภายในเครื่องและการควบคุมความปลอดภัยของชนิดข้อมูล (Type Safety)</p>
 </header>
 
 <div class="container">
 
-<!-- BEFORE START -->
+    <div class="card">
+        <div class="step badge-theory">LEARNING CONTENT</div>
+        <h2>ความรู้พื้นฐานและสถาปัตยกรรมระบบคลังข้อมูล Hive</h2>
+        <p>ในบทเรียนนี้นักศึกษาจะได้เรียนรู้วิธีการบันทึกข้อมูลถาวรภายในเครื่องสมาร์ตโฟน (Local Database) ด้วย <strong>Hive Database</strong> ซึ่งเป็นคลังข้อมูล NoSQL แบบ Key-Value Store ที่ทำงานได้รวดเร็วและปลอดภัยสูง โดยมีหัวข้อหลักที่ต้องทำความเข้าใจดังนี้:</p>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>คุณสมบัติระบบ (Feature)</th>
+                    <th>คำอธิบายและการทำงานในแอปพลิเคชัน</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Create (คำสั่งบันทึก)</strong></td>
+                    <td>ใช้ฟังก์ชัน <code>box.add(data)</code> บันทึกวัตถุใหม่ลงในคลังข้อมูลฐานข้อมูลอัตโนมัติ</td>
+                </tr>
+                <tr>
+                    <td><strong>Read (คำสั่งดึงค่า)</strong></td>
+                    <td>ใช้ฟังก์ชัน <code>box.getAt(index)</code> มาแมปออกผลลัพธ์ผ่าน <code>ListView.builder</code></td>
+                </tr>
+                <tr>
+                    <td><strong>Update (คำสั่งแก้ไข)</strong></td>
+                    <td>ใช้คำสั่ง <code>box.putAt(index, data)</code> เพื่ออัปเดตข้อมูลทับตำแหน่งดั้งเดิมในฐานข้อมูล</td>
+                </tr>
+                <tr>
+                    <td><strong>Delete (คำสั่งลบ)</strong></td>
+                    <td>ใช้คำสั่ง <code>box.deleteAt(index)</code> เพื่อนำข้อมูลออกจากหน่วยความจำทันที</td>
+                </tr>
+                <tr>
+                    <td><strong>Real-time Search</strong></td>
+                    <td>ระบบกรองคำค้นหา (Filter) แบบไม่แยกแยะอักษรพิมพ์เล็กพิมพ์ใหญ่ (Case-Insensitive)</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
-<div class="card">
+    <div class="card">
+        <div class="step">STEP 1</div>
+        <h2>สร้าง Project และจัดวางโครงสร้างไฟล์</h2>
+        <p>เปิดโปรแกรม VS Code จากนั้นทำการสร้างโปรเจกต์ใหม่โดยกดคีย์ลัดต่อไปนี้:</p>
+        <div class="code">
+            <div class="code-head">Keyboard shortcut</div>
+            <pre>CTRL + SHIFT + P</pre>
+        </div>
+        <p>พิมพ์คำสั่ง <code>Flutter: New Project</code> แล้วกำหนดชื่อโครงสร้างโปรเจกต์ว่า <code>smart_note_hive</code> จากนั้นตรวจสอบโครงสร้างระบบไฟล์ดังนี้:</p>
+        <div class="folder">
+smart_note_hive
+│
+├── lib
+│   ├── main.dart
+│   └── note.dart
+│
+└── pubspec.yaml
+        </div>
+    </div>
 
-<div class="step">
-BEFORE START
-</div>
-
-<h2>
-ก่อนเริ่ม Workshop
-</h2>
-
-<div class="checklist">
-
-<ul>
-
-<li>ติดตั้ง Flutter แล้ว</li>
-
-<li>เปิด VS Code ได้</li>
-
-<li>สร้าง Flutter Project ได้</li>
-
-<li>มี Chrome หรือ Emulator</li>
-
-</ul>
-
-</div>
-
-<div class="note warn">
-
-ถ้ายังสร้าง Flutter Project ใหม่ไม่ได้
-ให้ย้อนกลับไป Workshop ก่อนหน้า
-
-</div>
-
-</div>
-
-<!-- OVERVIEW -->
-
-<div class="card">
-
-<div class="step">
-OVERVIEW
-</div>
-
-<h2>
-สิ่งที่จะทำใน Workshop นี้
-</h2>
-
-<table>
-
-<tr>
-<th>STEP</th>
-<th>สิ่งที่ทำ</th>
-</tr>
-
-<tr>
-<td>STEP 1</td>
-<td>สร้าง Project + ติดตั้ง Package</td>
-</tr>
-
-<tr>
-<td>STEP 2</td>
-<td>สร้าง note.dart</td>
-</tr>
-
-<tr>
-<td>STEP 3</td>
-<td>CREATE — เพิ่ม Note</td>
-</tr>
-
-<tr>
-<td>STEP 4</td>
-<td>READ — แสดงรายการ</td>
-</tr>
-
-<tr>
-<td>STEP 5</td>
-<td>DELETE — ลบข้อมูล</td>
-</tr>
-
-</table>
-
-</div>
-
-<!-- STEP 1 -->
-
-<div class="card">
-
-<div class="step">
-STEP 1
-</div>
-
-<h2>
-สร้าง Flutter Project
-</h2>
-
-<h3>
-1. เปิด Terminal
-</h3>
-
-<div class="code">
-
-<div class="code-head">
-Terminal
-</div>
-
-<pre>
-flutter create note_keeper
-</pre>
-
-</div>
-
-<h3>
-2. เข้า Project
-</h3>
-
-<div class="code">
-
-<div class="code-head">
-Terminal
-</div>
-
-<pre>
-cd note_keeper
-</pre>
-
-</div>
-
-<h3>
-3. ติดตั้ง Hive
-</h3>
-
-<p>
-เปิดไฟล์ pubspec.yaml
-</p>
-
-<div class="folder">
-
-note_keeper/
-
-├── lib/
-
-├── android/
-
-├── ios/
-
-└── pubspec.yaml ← เปิดไฟล์นี้
-
-</div>
-
-<div class="code">
-
-<div class="code-head">
-pubspec.yaml
-</div>
-
-<pre>
+    <div class="card">
+        <div class="step">STEP 2</div>
+        <h2>ติดตั้งแพ็คเกจ Hive ลงในไฟล์กำหนดค่า</h2>
+        <p>เปิดไฟล์ <code>pubspec.yaml</code> และระบุเวอร์ชันแพ็คเกจในบล็อก dependencies:</p>
+        <div class="code">
+            <div class="code-head">pubspec.yaml</div>
+            <pre>
 dependencies:
   flutter:
     sdk: flutter
 
   hive: ^2.2.3
-  hive_flutter: ^1.1.0
-</pre>
+  hive_flutter: ^1.1.0</pre>
+        </div>
+        <p>ทำการดึงปลั๊กอินฐานข้อมูลผ่านช่องคำสั่ง Terminal:</p>
+        <div class="code">
+            <div class="code-head">Terminal Command</div>
+            <pre>flutter pub get</pre>
+        </div>
+    </div>
 
-</div>
-
-<h3>
-4. รัน pub get
-</h3>
-
-<div class="code">
-
-<div class="code-head">
-Terminal
-</div>
-
-<pre>
-flutter pub get
-</pre>
-
-</div>
-
-<div class="checklist">
-
-✅ STEP นี้ต้องได้
-
-<ul>
-
-<li>ไม่มีเส้นแดง</li>
-
-<li>flutter pub get สำเร็จ</li>
-
-<li>ขึ้นข้อความ Got dependencies</li>
-
-</ul>
-
-</div>
-
-</div>
-
-<!-- STEP 2 -->
-
-<div class="card">
-
-<div class="step">
-STEP 2
-</div>
-
-<h2>
-สร้าง note.dart
-</h2>
-
-<p>
-
-STEP นี้สร้าง Model สำหรับเก็บข้อมูล Note
-
-</p>
-
-<h3>
-ตำแหน่งไฟล์
-</h3>
-
-<div class="folder">
-
-lib/
-
-├── main.dart
-
-└── note.dart ← สร้างใหม่
-
-</div>
-
-<div class="note warn">
-
-STEP นี้แก้เฉพาะ note.dart
-
-ยังไม่ต้องแก้ main.dart
-
-</div>
-
-<h3>
-วิธีสร้างไฟล์
-</h3>
-
-<ol>
-
-<li>คลิกขวาที่ lib</li>
-
-<li>เลือก New File</li>
-
-<li>พิมพ์ชื่อ note.dart</li>
-
-<li>เปิดไฟล์ note.dart</li>
-
-<li>ลบทุกอย่างในไฟล์</li>
-
-<li>วางโค้ดด้านล่างทั้งหมด</li>
-
-</ol>
-
-<div class="code">
-
-<div class="code-head">
-lib/note.dart
-</div>
-
-<pre>
+    <div class="card">
+        <div class="step">STEP 3</div>
+        <h2>สร้างไฟล์แบบจำลองออบเจกต์ (lib/note.dart)</h2>
+        <p>ให้นักศึกษาสร้างไฟล์ชื่อ <code>note.dart</code> ขึ้นมาใหม่เพื่อทำหน้าที่เป็นโครงสร้างคลาสเก็บข้อมูลบันทึก:</p>
+        <div class="code">
+            <div class="code-head">lib/note.dart</div>
+            <pre>
 class Note {
-
-  final String title;
-  final String content;
+  String title;
+  String content;
+  String category;
+  String date;
 
   Note({
     required this.title,
     required this.content,
+    required this.category,
+    required this.date,
   });
 
-  Map<String,dynamic> toMap(){
-
+  Map<String, dynamic> toMap() {
     return {
-
-      'title':title,
-      'content':content,
-
+      'title': title,
+      'content': content,
+      'category': category,
+      'date': date,
     };
-
   }
+}</pre>
+        </div>
+    </div>
 
-  factory Note.fromMap(
-    Map map
-  ){
-
-    return Note(
-
-      title: map['title'],
-      content: map['content'],
-
-    );
-
-  }
-
-}
-</pre>
-
-</div>
-
-<div class="checklist">
-
-✅ STEP นี้ต้องได้
-
-<ul>
-
-<li>มีไฟล์ note.dart</li>
-
-<li>ไม่มีเส้นแดง</li>
-
-<li>ยังไม่ต้อง Run</li>
-
-</ul>
-
-</div>
-
-</div>
-
-<!-- STEP 3 -->
-
-<div class="card">
-
-<div class="step">
-STEP 3
-</div>
-
-<h2>
-CREATE — เพิ่ม Note
-</h2>
-
-<p>
-
-STEP นี้แก้เฉพาะ main.dart
-
-</p>
-
-<div class="folder">
-
-lib/
-
-├── main.dart ← แก้ไฟล์นี้
-
-└── note.dart
-
-</div>
-
-<div class="note bad">
-
-สำคัญมาก
-
-ฟังก์ชัน addNote()
-
-ต้องอยู่ภายใน
-
-class _HomePageState
-
-เท่านั้น
-
-</div>
-
-<h3>
-เปิด main.dart
-</h3>
-
-<h3>
-ลบทุกอย่างในไฟล์
-</h3>
-
-<h3>
-วางโค้ดนี้ทั้งหมด
-</h3>
-
-<div class="code">
-
-<div class="code-head">
-lib/main.dart
-</div>
-
-<pre>
+    <div class="card">
+        <div class="step">STEP 4</div>
+        <h2>พัฒนาสถาปัตยกรรมระบบหลัก (lib/main.dart)</h2>
+        <div class="note bad">
+            <strong>ข้อควรระวังสำหรับนักศึกษา:</strong> ให้ล้างซอร์สโค้ดในไฟล์ main.dart เดิมออกให้หมด แล้วแทนที่ด้วยชุดรหัสสถาปัตยกรรมระบบที่ได้รับการแก้ไขข้อผิดพลาดเรื่องชนิดข้อมูลและปรับปรุงระบบค้นหาเรียบร้อยแล้วด้านล่างนี้
+        </div>
+        <div class="code">
+            <div class="code-head">lib/main.dart (ฉบับเสถียร แก้ไข Error ไร้เส้นแดง)</div>
+            <pre>
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-import 'note.dart';
-
 void main() async {
-
   WidgetsFlutterBinding.ensureInitialized();
-
   await Hive.initFlutter();
-
   await Hive.openBox('notes');
-
-  runApp(
-    const MyApp()
-  );
-
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
-
-      debugShowCheckedModeBanner:false,
-
-      home: HomePage(),
-
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(primarySwatch: Colors.teal, useMaterial3: true),
+      home: const HomePage(),
     );
-
   }
-
 }
 
 class HomePage extends StatefulWidget {
-
   const HomePage({super.key});
 
   @override
   State<HomePage> createState() {
-
     return _HomePageState();
-
   }
-
 }
 
 class _HomePageState extends State<HomePage> {
+  final titleController = TextEditingController();
+  final contentController = TextEditingController();
+  final searchController = TextEditingController();
 
-  final titleController =
-    TextEditingController();
+  String category = 'การเรียน';
+  int editIndex = -1;
 
-  final contentController =
-    TextEditingController();
+  final List<String> categoryList = [
+    'การเรียน',
+    'งานวิจัย',
+    'ประชุม',
+    'ส่วนตัว',
+  ];
 
-  Future<void> addNote() async {
+  Future<void> saveNote() async {
+    if (titleController.text.isEmpty || contentController.text.isEmpty) return;
 
-    final box =
-      Hive.box('notes');
+    final box = Hive.box('notes');
+    Map<String, dynamic> data = {
+      'title': titleController.text,
+      'content': contentController.text,
+      'category': category,
+      'date': DateTime.now().toString().substring(0, 16),
+    };
 
-    final note = Note(
-
-      title:
-        titleController.text,
-
-      content:
-        contentController.text,
-
-    );
-
-    await box.add(
-      note.toMap()
-    );
+    if (editIndex == -1) {
+      await box.add(data);
+    } else {
+      await box.putAt(editIndex, data);
+      editIndex = -1;
+    }
 
     titleController.clear();
-
     contentController.clear();
-
+    category = 'การเรียน';
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
+    final box = Hive.box('notes');
 
     return Scaffold(
-
       appBar: AppBar(
-
-        title:
-          const Text('Note Keeper'),
-
+        title: const Text('Smart Note Hive'),
+        backgroundColor: Colors.teal,
+        foregroundColor: Colors.white,
       ),
-
       body: Padding(
-
-        padding:
-          const EdgeInsets.all(16),
-
+        padding: const EdgeInsets.all(16),
         child: Column(
-
           children: [
-
             TextField(
-
-              controller:
-                titleController,
-
-              decoration:
-                const InputDecoration(
-
-                  labelText:'Title',
-
-                ),
-
+              controller: searchController,
+              decoration: InputDecoration(
+                labelText: 'Search',
+                prefixIcon: const Icon(Icons.search),
+                border: const OutlineInputBorder(),
+                suffixIcon: searchController.text.isNotEmpty
+                    ? IconButton(
+                        icon: const Icon(Icons.clear),
+                        onPressed: () {
+                          searchController.clear();
+                          setState(() {});
+                        },
+                      )
+                    : null,
+              ),
+              onChanged: (v) {
+                setState(() {});
+              },
             ),
-
-            const SizedBox(
-              height:12,
-            ),
-
+            const SizedBox(height: 12),
             TextField(
-
-              controller:
-                contentController,
-
-              decoration:
-                const InputDecoration(
-
-                  labelText:'Content',
-
+              controller: titleController,
+              decoration: const InputDecoration(
+                labelText: 'Title',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 12),
+            TextField(
+              controller: contentController,
+              decoration: const InputDecoration(
+                labelText: 'Content',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 12),
+            // 🎯 จุดที่แก้ไข: กำหนด Type ชัดเจน ป้องกัน Error แดงตรง .map() และ .toList()
+            DropdownButtonFormField<String>(
+              decoration: const InputDecoration(
+                labelText: 'Category',
+                border: OutlineInputBorder(),
+              ),
+              isExpanded: true,
+              value: category,
+              items: categoryList.map<DropdownMenuItem<String>>((String e) {
+                return DropdownMenuItem<String>(value: e, child: Text(e));
+              }).toList(),
+              onChanged: (String? v) {
+                if (v == null) return;
+                setState(() {
+                  category = v;
+                });
+              },
+            ),
+            const SizedBox(height: 12),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: saveNote,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.teal,
+                  foregroundColor: Colors.white,
                 ),
-
+                child: Text(editIndex == -1 ? 'Save Note' : 'Update Note'),
+              ),
             ),
+            const SizedBox(height: 20),
+            Expanded(
+              child: ValueListenableBuilder(
+                valueListenable: box.listenable(),
+                builder: (context, Box cleanBox, _) {
+                  return ListView.builder(
+                    itemCount: cleanBox.length,
+                    itemBuilder: (context, index) {
+                      final data = cleanBox.getAt(index);
 
-            const SizedBox(
-              height:16,
+                      if (searchController.text.isNotEmpty &&
+                          !data['title'].toString().toLowerCase().contains(
+                            searchController.text.toLowerCase(),
+                          )) {
+                        return Container();
+                      }
+
+                      return Card(
+                        child: ListTile(
+                          title: Text(
+                            data['title'],
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          subtitle: Text(
+                            "${data['content']}\n${data['category']} | ${data['date']}",
+                          ),
+                          leading: IconButton(
+                            icon: const Icon(Icons.edit, color: Colors.blue),
+                            onPressed: () {
+                              titleController.text = data['title'];
+                              contentController.text = data['content'];
+                              category = data['category'];
+                              editIndex = index;
+                              setState(() {});
+                            },
+                          ),
+                          trailing: IconButton(
+                            icon: const Icon(Icons.delete, color: Colors.red),
+                            onPressed: () async {
+                              await cleanBox.deleteAt(index);
+                            },
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
             ),
-
-            ElevatedButton(
-
-              onPressed:addNote,
-
-              child:
-                const Text(
-                  'Save Note'
-                ),
-
-            ),
-
           ],
-
         ),
-
       ),
-
     );
-
   }
-
 }
 </pre>
-
-</div>
-
-<div class="checklist">
-
-✅ STEP นี้ต้องได้
-
-<ul>
-
-<li>ไม่มีเส้นแดง</li>
-
-<li>กด Run ได้</li>
-
-<li>เห็น TextField 2 ช่อง</li>
-
-<li>เห็นปุ่ม Save Note</li>
-
-</ul>
-
-</div>
-
-</div>
-
-<!-- STEP 4 -->
-
-<div class="card">
-
-<div class="step">
-STEP 4
-</div>
-
-<h2>
-READ — แสดงรายการ
-</h2>
-
-<p>
-
-STEP นี้เพิ่ม ListView
-เพื่อแสดง Note ที่บันทึกไว้
-
-</p>
-
-<div class="note warn">
-
-แก้เฉพาะใน build()
-
-ไม่ต้องลบทั้งไฟล์
-
-</div>
-
-<h3>
-หาโค้ดนี้
-</h3>
-
-<div class="code">
-
-<div class="code-head">
-main.dart
-</div>
-
-<pre>
-ElevatedButton(
-
-  onPressed:addNote,
-
-  child:
-    const Text(
-      'Save Note'
-    ),
-
-),
-</pre>
-
-</div>
-
-<h3>
-วางโค้ดด้านล่างต่อจาก ElevatedButton
-</h3>
-
-<div class="code">
-
-<div class="code-head">
-เพิ่มด้านล่างปุ่ม
-</div>
-
-<pre>
-const SizedBox(
-  height:20,
-),
-
-Expanded(
-
-  child: ValueListenableBuilder(
-
-    valueListenable:
-      Hive.box('notes')
-      .listenable(),
-
-    builder:
-      (context, Box box, _) {
-
-      return ListView.builder(
-
-        itemCount:
-          box.length,
-
-        itemBuilder:
-          (context,index){
-
-          final map =
-            box.getAt(index);
-
-          final note =
-            Note.fromMap(map);
-
-          return Card(
-
-            child: ListTile(
-
-              title:
-                Text(note.title),
-
-              subtitle:
-                Text(note.content),
-
-            ),
-
-          );
-
-        },
-
-      );
-
-    },
-
-  ),
-
-)
-</pre>
-
-</div>
-
-<div class="checklist">
-
-✅ STEP นี้ต้องได้
-
-<ul>
-
-<li>กด Save แล้วข้อมูลขึ้นทันที</li>
-
-<li>ไม่ crash</li>
-
-<li>ListView แสดงข้อมูลได้</li>
-
-</ul>
-
-</div>
-
-</div>
-
-<!-- STEP 5 -->
-
-<div class="card">
-
-<div class="step">
-STEP 5
-</div>
-
-<h2>
-DELETE — ลบข้อมูล
-</h2>
-
-<h3>
-หา ListTile
-</h3>
-
-<h3>
-เพิ่ม trailing:
-</h3>
-
-<div class="code">
-
-<div class="code-head">
-เพิ่มใน ListTile
-</div>
-
-<pre>
-trailing: IconButton(
-
-  onPressed:() async {
-
-    await box.deleteAt(index);
-
-  },
-
-  icon:
-    const Icon(
-      Icons.delete
-    ),
-
-),
-</pre>
-
-</div>
-
-<div class="checklist">
-
-✅ STEP นี้ต้องได้
-
-<ul>
-
-<li>กดถังขยะแล้วลบได้</li>
-
-<li>ข้อมูลหายทันที</li>
-
-<li>ไม่ต้อง refresh</li>
-
-</ul>
-
-</div>
-
-</div>
-
-<!-- COMMON ERRORS -->
-
-<div class="card">
-
-<div class="step">
-COMMON ERRORS
-</div>
-
-<h2>
-Error ที่เจอบ่อยที่สุด
-</h2>
-
-<table>
-
-<tr>
-
-<th>
-Error
-</th>
-
-<th>
-สาเหตุ
-</th>
-
-<th>
-วิธีแก้
-</th>
-
-</tr>
-
-<tr>
-
-<td>
-Undefined name addNote
-</td>
-
-<td>
-ไม่มี method
-</td>
-
-<td>
-สร้าง addNote()
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-Invalid constant value
-</td>
-
-<td>
-ใช้ const ผิด
-</td>
-
-<td>
-เอา const ออก
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-Hive box not found
-</td>
-
-<td>
-ไม่ได้ openBox
-</td>
-
-<td>
-เพิ่ม Hive.openBox()
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-RenderFlex overflowed
-</td>
-
-<td>
-Widget ล้น
-</td>
-
-<td>
-ใช้ Expanded
-</td>
-
-</tr>
-
-</table>
-
-</div>
-
-<!-- SUMMARY -->
-
-<div class="card">
-
-<div class="step">
-SUMMARY
-</div>
-
-<h2>
-สรุปสิ่งที่ได้จาก Workshop นี้
-</h2>
-
-<ul>
-
-<li>เข้าใจ CRUD</li>
-
-<li>ใช้ Hive Database ได้</li>
-
-<li>สร้าง Note App ได้</li>
-
-<li>ใช้ Flutter Local Storage ได้</li>
-
-</ul>
-
-</div>
+        </div>
+        <div class="note ok">
+            ระบบงานนี้ทำงานได้อย่างสมบูรณ์แบบ รองรับฟังก์ชันมิติข้อมูลครบองค์ประกอบ CRUD, ป้องกันข้อผิดพลาดเรื่องความสอดคล้องชนิดข้อมูล และกรองข้อมูลแบบอัจฉริยะเรียบร้อยแล้ว
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="step badge-test">LAB QUESTIONS & ASSIGNMENT</div>
+        <h2>5. แบบฝึกหัดทบทวนและประเมินผลปฏิบัติการ</h2>
+        <p>ให้นักศึกษาทำการศึกษาซอร์สโค้ดระบบแอปพลิเคชันหลักใน STEP 4 แล้วตอบคำถามลงในเล่มรายงานย่อ:</p>
+        
+        <div class="question-box">
+            <p class="q-title">ตอนที่ 1: การคิดวิเคราะห์เหตุผลเชิงลึก (Theoretical Analysis)</p>
+            <ol>
+                <li>เพราะเหตุใดการประกาศคำสั่ง <code>categoryList.map&lt;DropdownMenuItem&lt;String&gt;&gt;</code> จึงสามารถขจัดความขัดแย้งของ Type Mismatch ได้สำเร็จ? จงอธิบายความสำคัญของการทำ Strongly Typed</li>
+                <li>วิเจ็ต <code>ValueListenableBuilder</code> มีประโยชน์และช่วยบริหารจัดการทรัพยากรหน่วยความจำของแอปพลิเคชันได้ดีกว่าคำสั่งการ Rebuild หน้าจอทั่วไปอย่างไรบ้าง</li>
+            </ol>
+        </div>
+
+        <div class="question-box" style="margin-top: 20px;">
+            <p class="q-title">ตอนที่ 2: โจทย์ฝึกฝนกระบวนการพัฒนา (Coding Challenge)</p>
+            <ol>
+                <li>ให้นักศึกษาปรับปรุงเงื่อนไขในช่องกรองค้นหา (Search Criteria) เพิ่มเติม เพื่อให้ระบบสามารถค้นหาคำสำคัญจากข้อความรายละเอียด (Content) ควบคู่ไปกับการค้นหาหัวข้อเรื่อง (Title) ได้พร้อม ๆ กัน</li>
+            </ol>
+        </div>
+    </div>
 
 </div>
 
