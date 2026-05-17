@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Workshop 10 - Flutter Hive CRUD</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<style>
+
+body{
+    margin:0;
+    font-family:'Sarabun',sans-serif;
+    background:#f4f7fb;
+    color:#1e293b;
+    line-height:1.8;
+}
+
+header{
+    background:#0f766e;
+    color:white;
+    padding:40px 20px;
+}
+
+.container{
+    max-width:1100px;
+    margin:auto;
+    padding:24px;
+}
+
+.card{
+    background:white;
+    border-radius:16px;
+    padding:24px;
+    margin-bottom:24px;
+    border:1px solid #dbe4e4;
+    box-shadow:0 2px 8px rgba(0,0,0,.05);
+}
+
+.step{
+    display:inline-block;
+    background:#0f766e;
+    color:white;
+    padding:5px 14px;
+    border-radius:999px;
+    font-size:13px;
+    margin-bottom:12px;
+}
+
+.code{
+    background:#0f172a;
+    color:#e2e8f0;
+    border-radius:12px;
+    overflow:auto;
+    margin-top:16px;
+}
+
+.code-head{
+    background:#1e293b;
+    padding:12px;
+    font-size:13px;
+}
+
+pre{
+    padding:20px;
+    overflow:auto;
+}
+
+.note{
+    padding:16px;
+    border-radius:10px;
+    margin:18px 0;
+}
+
+.warn{
+    background:#fef3c7;
+    border-left:5px solid #d97706;
+}
+
+.bad{
+    background:#fee2e2;
+    border-left:5px solid #dc2626;
+}
+
+.ok{
+    background:#dcfce7;
+    border-left:5px solid #16a34a;
+}
+
+.checklist{
+    background:#ecfeff;
+    border:1px solid #a5f3fc;
+    padding:16px;
+    border-radius:10px;
+    margin-top:20px;
+}
+
+.folder{
+    background:#111827;
+    color:#cbd5e1;
+    padding:18px;
+    border-radius:12px;
+    margin-top:12px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:20px;
+}
+
+th,td{
+    border:1px solid #dbe4e4;
+    padding:12px;
+}
+
+th{
+    background:#ccfbf1;
+}
+
+h1,h2,h3{
+    margin-top:0;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+
+<h1>Workshop 10 — Flutter Hive CRUD</h1>
+
+<p>
+สร้าง Note App ด้วย Flutter + Hive แบบ Step by Step
+</p>
+
+</header>
+
+<div class="container">
+
+<!-- BEFORE START -->
+
+<div class="card">
+
+<div class="step">
+BEFORE START
+</div>
+
+<h2>
+ก่อนเริ่ม Workshop
+</h2>
+
+<div class="checklist">
+
+<ul>
+
+<li>ติดตั้ง Flutter แล้ว</li>
+
+<li>เปิด VS Code ได้</li>
+
+<li>สร้าง Flutter Project ได้</li>
+
+<li>มี Chrome หรือ Emulator</li>
+
+</ul>
+
+</div>
+
+<div class="note warn">
+
+ถ้ายังสร้าง Flutter Project ใหม่ไม่ได้
+ให้ย้อนกลับไป Workshop ก่อนหน้า
+
+</div>
+
+</div>
+
+<!-- OVERVIEW -->
+
+<div class="card">
+
+<div class="step">
+OVERVIEW
+</div>
+
+<h2>
+สิ่งที่จะทำใน Workshop นี้
+</h2>
+
+<table>
+
+<tr>
+<th>STEP</th>
+<th>สิ่งที่ทำ</th>
+</tr>
+
+<tr>
+<td>STEP 1</td>
+<td>สร้าง Project + ติดตั้ง Package</td>
+</tr>
+
+<tr>
+<td>STEP 2</td>
+<td>สร้าง note.dart</td>
+</tr>
+
+<tr>
+<td>STEP 3</td>
+<td>CREATE — เพิ่ม Note</td>
+</tr>
+
+<tr>
+<td>STEP 4</td>
+<td>READ — แสดงรายการ</td>
+</tr>
+
+<tr>
+<td>STEP 5</td>
+<td>DELETE — ลบข้อมูล</td>
+</tr>
+
+</table>
+
+</div>
+
+<!-- STEP 1 -->
+
+<div class="card">
+
+<div class="step">
+STEP 1
+</div>
+
+<h2>
+สร้าง Flutter Project
+</h2>
+
+<h3>
+1. เปิด Terminal
+</h3>
+
+<div class="code">
+
+<div class="code-head">
+Terminal
+</div>
+
+<pre>
+flutter create note_keeper
+</pre>
+
+</div>
+
+<h3>
+2. เข้า Project
+</h3>
+
+<div class="code">
+
+<div class="code-head">
+Terminal
+</div>
+
+<pre>
+cd note_keeper
+</pre>
+
+</div>
+
+<h3>
+3. ติดตั้ง Hive
+</h3>
+
+<p>
+เปิดไฟล์ pubspec.yaml
+</p>
+
+<div class="folder">
+
+note_keeper/
+
+├── lib/
+
+├── android/
+
+├── ios/
+
+└── pubspec.yaml ← เปิดไฟล์นี้
+
+</div>
+
+<div class="code">
+
+<div class="code-head">
+pubspec.yaml
+</div>
+
+<pre>
+dependencies:
+  flutter:
+    sdk: flutter
+
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+</pre>
+
+</div>
+
+<h3>
+4. รัน pub get
+</h3>
+
+<div class="code">
+
+<div class="code-head">
+Terminal
+</div>
+
+<pre>
+flutter pub get
+</pre>
+
+</div>
+
+<div class="checklist">
+
+✅ STEP นี้ต้องได้
+
+<ul>
+
+<li>ไม่มีเส้นแดง</li>
+
+<li>flutter pub get สำเร็จ</li>
+
+<li>ขึ้นข้อความ Got dependencies</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<!-- STEP 2 -->
+
+<div class="card">
+
+<div class="step">
+STEP 2
+</div>
+
+<h2>
+สร้าง note.dart
+</h2>
+
+<p>
+
+STEP นี้สร้าง Model สำหรับเก็บข้อมูล Note
+
+</p>
+
+<h3>
+ตำแหน่งไฟล์
+</h3>
+
+<div class="folder">
+
+lib/
+
+├── main.dart
+
+└── note.dart ← สร้างใหม่
+
+</div>
+
+<div class="note warn">
+
+STEP นี้แก้เฉพาะ note.dart
+
+ยังไม่ต้องแก้ main.dart
+
+</div>
+
+<h3>
+วิธีสร้างไฟล์
+</h3>
+
+<ol>
+
+<li>คลิกขวาที่ lib</li>
+
+<li>เลือก New File</li>
+
+<li>พิมพ์ชื่อ note.dart</li>
+
+<li>เปิดไฟล์ note.dart</li>
+
+<li>ลบทุกอย่างในไฟล์</li>
+
+<li>วางโค้ดด้านล่างทั้งหมด</li>
+
+</ol>
+
+<div class="code">
+
+<div class="code-head">
+lib/note.dart
+</div>
+
+<pre>
+class Note {
+
+  final String title;
+  final String content;
+
+  Note({
+    required this.title,
+    required this.content,
+  });
+
+  Map<String,dynamic> toMap(){
+
+    return {
+
+      'title':title,
+      'content':content,
+
+    };
+
+  }
+
+  factory Note.fromMap(
+    Map map
+  ){
+
+    return Note(
+
+      title: map['title'],
+      content: map['content'],
+
+    );
+
+  }
+
+}
+</pre>
+
+</div>
+
+<div class="checklist">
+
+✅ STEP นี้ต้องได้
+
+<ul>
+
+<li>มีไฟล์ note.dart</li>
+
+<li>ไม่มีเส้นแดง</li>
+
+<li>ยังไม่ต้อง Run</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<!-- STEP 3 -->
+
+<div class="card">
+
+<div class="step">
+STEP 3
+</div>
+
+<h2>
+CREATE — เพิ่ม Note
+</h2>
+
+<p>
+
+STEP นี้แก้เฉพาะ main.dart
+
+</p>
+
+<div class="folder">
+
+lib/
+
+├── main.dart ← แก้ไฟล์นี้
+
+└── note.dart
+
+</div>
+
+<div class="note bad">
+
+สำคัญมาก
+
+ฟังก์ชัน addNote()
+
+ต้องอยู่ภายใน
+
+class _HomePageState
+
+เท่านั้น
+
+</div>
+
+<h3>
+เปิด main.dart
+</h3>
+
+<h3>
+ลบทุกอย่างในไฟล์
+</h3>
+
+<h3>
+วางโค้ดนี้ทั้งหมด
+</h3>
+
+<div class="code">
+
+<div class="code-head">
+lib/main.dart
+</div>
+
+<pre>
+import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
+import 'note.dart';
+
+void main() async {
+
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Hive.initFlutter();
+
+  await Hive.openBox('notes');
+
+  runApp(
+    const MyApp()
+  );
+
+}
+
+class MyApp extends StatelessWidget {
+
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+
+    return MaterialApp(
+
+      debugShowCheckedModeBanner:false,
+
+      home: HomePage(),
+
+    );
+
+  }
+
+}
+
+class HomePage extends StatefulWidget {
+
+  const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() {
+
+    return _HomePageState();
+
+  }
+
+}
+
+class _HomePageState extends State<HomePage> {
+
+  final titleController =
+    TextEditingController();
+
+  final contentController =
+    TextEditingController();
+
+  Future<void> addNote() async {
+
+    final box =
+      Hive.box('notes');
+
+    final note = Note(
+
+      title:
+        titleController.text,
+
+      content:
+        contentController.text,
+
+    );
+
+    await box.add(
+      note.toMap()
+    );
+
+    titleController.clear();
+
+    contentController.clear();
+
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    return Scaffold(
+
+      appBar: AppBar(
+
+        title:
+          const Text('Note Keeper'),
+
+      ),
+
+      body: Padding(
+
+        padding:
+          const EdgeInsets.all(16),
+
+        child: Column(
+
+          children: [
+
+            TextField(
+
+              controller:
+                titleController,
+
+              decoration:
+                const InputDecoration(
+
+                  labelText:'Title',
+
+                ),
+
+            ),
+
+            const SizedBox(
+              height:12,
+            ),
+
+            TextField(
+
+              controller:
+                contentController,
+
+              decoration:
+                const InputDecoration(
+
+                  labelText:'Content',
+
+                ),
+
+            ),
+
+            const SizedBox(
+              height:16,
+            ),
+
+            ElevatedButton(
+
+              onPressed:addNote,
+
+              child:
+                const Text(
+                  'Save Note'
+                ),
+
+            ),
+
+          ],
+
+        ),
+
+      ),
+
+    );
+
+  }
+
+}
+</pre>
+
+</div>
+
+<div class="checklist">
+
+✅ STEP นี้ต้องได้
+
+<ul>
+
+<li>ไม่มีเส้นแดง</li>
+
+<li>กด Run ได้</li>
+
+<li>เห็น TextField 2 ช่อง</li>
+
+<li>เห็นปุ่ม Save Note</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<!-- STEP 4 -->
+
+<div class="card">
+
+<div class="step">
+STEP 4
+</div>
+
+<h2>
+READ — แสดงรายการ
+</h2>
+
+<p>
+
+STEP นี้เพิ่ม ListView
+เพื่อแสดง Note ที่บันทึกไว้
+
+</p>
+
+<div class="note warn">
+
+แก้เฉพาะใน build()
+
+ไม่ต้องลบทั้งไฟล์
+
+</div>
+
+<h3>
+หาโค้ดนี้
+</h3>
+
+<div class="code">
+
+<div class="code-head">
+main.dart
+</div>
+
+<pre>
+ElevatedButton(
+
+  onPressed:addNote,
+
+  child:
+    const Text(
+      'Save Note'
+    ),
+
+),
+</pre>
+
+</div>
+
+<h3>
+วางโค้ดด้านล่างต่อจาก ElevatedButton
+</h3>
+
+<div class="code">
+
+<div class="code-head">
+เพิ่มด้านล่างปุ่ม
+</div>
+
+<pre>
+const SizedBox(
+  height:20,
+),
+
+Expanded(
+
+  child: ValueListenableBuilder(
+
+    valueListenable:
+      Hive.box('notes')
+      .listenable(),
+
+    builder:
+      (context, Box box, _) {
+
+      return ListView.builder(
+
+        itemCount:
+          box.length,
+
+        itemBuilder:
+          (context,index){
+
+          final map =
+            box.getAt(index);
+
+          final note =
+            Note.fromMap(map);
+
+          return Card(
+
+            child: ListTile(
+
+              title:
+                Text(note.title),
+
+              subtitle:
+                Text(note.content),
+
+            ),
+
+          );
+
+        },
+
+      );
+
+    },
+
+  ),
+
+)
+</pre>
+
+</div>
+
+<div class="checklist">
+
+✅ STEP นี้ต้องได้
+
+<ul>
+
+<li>กด Save แล้วข้อมูลขึ้นทันที</li>
+
+<li>ไม่ crash</li>
+
+<li>ListView แสดงข้อมูลได้</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<!-- STEP 5 -->
+
+<div class="card">
+
+<div class="step">
+STEP 5
+</div>
+
+<h2>
+DELETE — ลบข้อมูล
+</h2>
+
+<h3>
+หา ListTile
+</h3>
+
+<h3>
+เพิ่ม trailing:
+</h3>
+
+<div class="code">
+
+<div class="code-head">
+เพิ่มใน ListTile
+</div>
+
+<pre>
+trailing: IconButton(
+
+  onPressed:() async {
+
+    await box.deleteAt(index);
+
+  },
+
+  icon:
+    const Icon(
+      Icons.delete
+    ),
+
+),
+</pre>
+
+</div>
+
+<div class="checklist">
+
+✅ STEP นี้ต้องได้
+
+<ul>
+
+<li>กดถังขยะแล้วลบได้</li>
+
+<li>ข้อมูลหายทันที</li>
+
+<li>ไม่ต้อง refresh</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<!-- COMMON ERRORS -->
+
+<div class="card">
+
+<div class="step">
+COMMON ERRORS
+</div>
+
+<h2>
+Error ที่เจอบ่อยที่สุด
+</h2>
+
+<table>
+
+<tr>
+
+<th>
+Error
+</th>
+
+<th>
+สาเหตุ
+</th>
+
+<th>
+วิธีแก้
+</th>
+
+</tr>
+
+<tr>
+
+<td>
+Undefined name addNote
+</td>
+
+<td>
+ไม่มี method
+</td>
+
+<td>
+สร้าง addNote()
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+Invalid constant value
+</td>
+
+<td>
+ใช้ const ผิด
+</td>
+
+<td>
+เอา const ออก
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+Hive box not found
+</td>
+
+<td>
+ไม่ได้ openBox
+</td>
+
+<td>
+เพิ่ม Hive.openBox()
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+RenderFlex overflowed
+</td>
+
+<td>
+Widget ล้น
+</td>
+
+<td>
+ใช้ Expanded
+</td>
+
+</tr>
+
+</table>
+
+</div>
+
+<!-- SUMMARY -->
+
+<div class="card">
+
+<div class="step">
+SUMMARY
+</div>
+
+<h2>
+สรุปสิ่งที่ได้จาก Workshop นี้
+</h2>
+
+<ul>
+
+<li>เข้าใจ CRUD</li>
+
+<li>ใช้ Hive Database ได้</li>
+
+<li>สร้าง Note App ได้</li>
+
+<li>ใช้ Flutter Local Storage ได้</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</body>
+</html>
