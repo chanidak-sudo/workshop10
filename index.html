@@ -159,7 +159,7 @@ class Note {
             <strong>ข้อควรระวังสำหรับนักศึกษา:</strong> ให้ล้างซอร์สโค้ดในไฟล์ main.dart เดิมออกให้หมด แล้วแทนที่ด้วยชุดรหัสสถาปัตยกรรมระบบที่ได้รับการแก้ไขข้อผิดพลาดเรื่องชนิดข้อมูลและปรับปรุงระบบค้นหาเรียบร้อยแล้วด้านล่างนี้
         </div>
         <div class="code">
-            <div class="code-head">lib/main.dart</div>
+            <div class="code-head">lib/main.dart (ฉบับเสถียร แก้ไข Error ไร้เส้นแดง)</div>
             <pre>
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -376,25 +376,42 @@ class _HomePageState extends State<HomePage> {
     </div>
 
     <div class="card">
-        <div class="step badge-test">LAB QUESTIONS & ASSIGNMENT</div>
-        <h2>5. แบบฝึกหัดทบทวนและประเมินผลปฏิบัติการ</h2>
-        <p>ให้นักศึกษาทำการศึกษาซอร์สโค้ดระบบแอปพลิเคชันหลักใน STEP 4 แล้วตอบคำถามลงในเล่มรายงานย่อ:</p>
-        
-        <div class="question-box">
-            <p class="q-title">ตอนที่ 1: การคิดวิเคราะห์เหตุผลเชิงลึก (Theoretical Analysis)</p>
-            <ol>
-                <li>เพราะเหตุใดการประกาศคำสั่ง <code>categoryList.map&lt;DropdownMenuItem&lt;String&gt;&gt;</code> จึงสามารถขจัดความขัดแย้งของ Type Mismatch ได้สำเร็จ? จงอธิบายความสำคัญของการทำ Strongly Typed</li>
-                <li>วิเจ็ต <code>ValueListenableBuilder</code> มีประโยชน์และช่วยบริหารจัดการทรัพยากรหน่วยความจำของแอปพลิเคชันได้ดีกว่าคำสั่งการ Rebuild หน้าจอทั่วไปอย่างไรบ้าง</li>
-            </ol>
-        </div>
+  <div class="step badge-test">LAB QUESTIONS & ASSIGNMENT</div>
+  <h2>5. แบบฝึกหัดทบทวนและประเมินผลปฏิบัติการ</h2>
+  <p>ให้นักศึกษาทำการศึกษาซอร์สโค้ดระบบแอปพลิเคชันหลักใน STEP 4 แล้วตอบคำถามต่อไปนี้:</p>
+  
+  <div class="question-box">
+    <p class="q-title">ตอนที่ 1: การคิดวิเคราะห์เหตุผลเชิงลึก (Theoretical Analysis)</p>
+    <ol>
+      <li>เพราะเหตุใดการประกาศคำสั่ง <code>categoryList.map&lt;DropdownMenuItem&lt;String&gt;&gt;</code> จึงสามารถขจัดความขัดแย้งของ Type Mismatch ได้สำเร็จ? จงอธิบายความสำคัญของการทำ Strongly Typed</li>
+      <li>วิเจ็ต <code>ValueListenableBuilder</code> มีประโยชน์และช่วยบริหารจัดการทรัพยากรหน่วยความจำของแอปพลิเคชันได้ดีกว่าคำสั่งการ Rebuild หน้าจอทั่วไปอย่างไรบ้าง</li>
+    </ol>
+  </div>
 
-        <div class="question-box" style="margin-top: 20px;">
-            <p class="q-title">ตอนที่ 2: โจทย์ฝึกฝนกระบวนการพัฒนา (Coding Challenge)</p>
-            <ol>
-                <li>ให้นักศึกษาปรับปรุงเงื่อนไขในช่องกรองค้นหา (Search Criteria) เพิ่มเติม เพื่อให้ระบบสามารถค้นหาคำสำคัญจากข้อความรายละเอียด (Content) ควบคู่ไปกับการค้นหาหัวข้อเรื่อง (Title) ได้พร้อม ๆ กัน</li>
-            </ol>
-        </div>
+  <div class="question-box">
+    <p class="q-title">ตอนที่ 2: โจทย์ฝึกฝนกระบวนการพัฒนา (Coding Challenge)</p>
+    <ol>
+      <li>ให้นักศึกษาปรับปรุงเงื่อนไขในช่องกรองค้นหา (Search Criteria) เพิ่มเติม เพื่อให้ระบบสามารถค้นหาคำสำคัญจากข้อความรายละเอียด (Content) ควบคู่ไปกับการค้นหาหัวข้อเรื่อง (Title) ได้พร้อม ๆ กัน</li>
+    </ol>
+
+    <div class="guide-box">
+      <strong>💡 ไกด์ไลน์คำใบ้สำหรับนักศึกษา (Search Guide & Code Hint):</strong>
+      <p style="margin: 6px 0;">1. ตรรกะเดิมในบิลด์ฟังก์ชันจะทำการเช็กคำค้นหาจากตัวแปร <code>data['title']</code> เพียงตัวเดียว หากต้องการให้ค้นหาเจอบนเนื้อหาด้วย ให้ใช้หลักการทางตรรกศาสตร์เครื่องหมายเชื่อม <code>&&</code> (และ) เพื่อคัดออกกรณีไม่ตรงทั้งสองเงื่อนไข</p>
+      <p style="margin: 6px 0;">2. อย่าลืมตรวจสอบการใช้คำสั่ง <code>.toString()</code> และแปลงประเภทข้อความเป็นตัวพิมพ์เล็ก <code>.toLowerCase()</code> เสมอ เพื่อลดข้อผิดพลาดการตรวจจับข้อมูล</p>
+      
+      <p style="font-weight: bold; margin-top: 12px; color: #b45309;">ตัวอย่างการปรับแก้โครงสร้างเงื่อนไขกรองข้อมูลใน ListView.builder:</p>
+<div class="code" style="background: #1e1e2e;">
+<pre style="color: #a6adc8; font-size: 13px;">
+// โค้ดที่ผ่านการอัปเกรดให้ตรวจค้นได้ทั้งสองคอลัมน์ข้อมูลพร้อมกัน
+if (searchController.text.isNotEmpty &&
+    !data['title'].toString().toLowerCase().contains(searchController.text.toLowerCase()) &&
+    !data['content'].toString().toLowerCase().contains(searchController.text.toLowerCase())) {
+  return Container(); // ถ้าไม่ตรงทั้ง Title และ Content ให้ซ่อนการ์ดนั้นไว้
+}</pre>
+</div>
     </div>
+  </div>
+</div>
 
 </div>
 
